@@ -5,15 +5,17 @@ import (
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
 	"os"
-
 	"path/filepath"
 )
 
-var wLog *WLog
+var (
+	wLog *WLog
+)
 
 type WLog struct {
 	logger   *logrus.Logger
 	path     string
+	wdPath   string // 项目根目录为起点的后加path
 	filename string
 	leastDay uint
 }
@@ -33,12 +35,25 @@ func init() {
 	if err != nil {
 		p, _ = os.Getwd()
 	}
-	wLog.path = p
+	wLog.wdPath = "logs"
+	wLog.path = filepath.Join(p, wLog.wdPath)
 	wLog.filename = "log"
 	// add hooks
 	wLog.logger.AddHook(wLog.NewLfsHook())
-	// caller
-	wLog.logger.SetReportCaller(true)
+}
+
+func SetLogPath(path string) {
+	wLog.path = path
+}
+func SetLogWDPath(wd string) {
+	wLog.wdPath = wd
+}
+func SetLogFilename(filename string) {
+	wLog.filename = filename
+}
+
+func SetReportCaller(caller bool) {
+	wLog.logger.SetReportCaller(caller)
 }
 
 func (w *WLog) NewLfsHook() logrus.Hook {

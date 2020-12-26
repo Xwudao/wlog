@@ -3,10 +3,11 @@ package wlog
 import (
 	"errors"
 	"os"
-	"os/exec"
-	"path/filepath"
 	"runtime"
 	"strings"
+
+	"os/exec"
+	"path/filepath"
 )
 
 func GetCurrentPath() (string, error) {

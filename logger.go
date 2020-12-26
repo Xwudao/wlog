@@ -1,6 +1,8 @@
 package wlog
 
-import "github.com/sirupsen/logrus"
+import (
+	"github.com/sirupsen/logrus"
+)
 
 func Trace(args ...interface{}) {
 	wLog.logger.Trace(args...)
